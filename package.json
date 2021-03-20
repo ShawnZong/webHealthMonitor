@@ -1,0 +1,22 @@
+{
+  "name": "webmornitor",
+  "version": "1.0.0",
+  "description": "website Monitor, periodically sending tests to websites and store logs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShawnZong/webHealthMonitor.git"
+  },
+  "author": "Junsheng Tan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShawnZong/webHealthMonitor/issues"
+  },
+  "homepage": "https://github.com/ShawnZong/webHealthMonitor#readme",
+  "devDependencies": {
+    "cypress": "^6.8.0"
+  }
+}
