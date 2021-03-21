@@ -1,12 +1,12 @@
-# Website Health Monitor
+# Website Health Monitor 🩺
 
-## Overview
+## Overview 📝
 
 A tool for monitoring website health. 
 
 Users can specify a list of URLs and test rules in /src/utils/links.js. The tool will automatically execute monitor tasks, generate logs, and store them in MongoDB. The logs contain task overview, checked URLs, their status, response time, an error message (if exists).
 
-## Solution
+## Solution💡
 
 I chose **JavaScript** to develop this tool. Because JavaScript is easy to use for software related to web. For example, I can select the DOM element conveniently when testing whether the website has specific text or not. Also **npm** is convenient for package management. Moreover, the JS community has many useful libraries, including **Axios**, a promise-based HTTP client.
 
@@ -18,14 +18,14 @@ For security concerns, I moved all sensitive information to external configurati
 
 I used MongoDB for storing logs. enabled connection pool, because the tool frequently writes to DB, connection pool can reuse database connections.
 
-## Technologies
+## Technologies👨🏻‍💻
 
 * JavaScript + Node.js + Axios + Npm
 * MongoDB
 * Docker Compose
 * Eslint
 
-## Features
+## Features💡
 
 * User can specify a list of URLs and test rules.
 * User can configure the custom interval for periodically executing tasks.
@@ -33,7 +33,7 @@ I used MongoDB for storing logs. enabled connection pool, because the tool frequ
 * Logs are stored in MongoDB. Users can either use the local docker-compose.yml to create local MongoDB or specify the URI of Atlas MongoDB in the configuration file.
 * Eslint to ensure coding style
 
-## Usage
+## Usage🛠
 
 1. Install required packages
 
@@ -156,7 +156,7 @@ cd ./src && node test.js
 
 5. Users can see logs output in the console as well as in the database.
 
-## Design question
+## Design question🔮
 
 Assuming we wanted to simultaneously monitor the connectivity (and latencies) from multiple geographically distributed locations and collect all the data to a single report that always reflects the current status across all locations. Describe how the design would be different. How would you transfer the data? Security considerations?
 
@@ -164,7 +164,7 @@ We can use a proxy to simulate requests from different locations. Because I used
 
 Regarding security concerns in data transfer. We can establish IPsec tunnels by StrongSwan so that the communication is encrypted.
 
-## Future work
+## Future work📈
 
 * Upload Docker image.
 * Patterns to check header parameters.
