@@ -9,8 +9,12 @@ const mongoose = require('mongoose');
 const Log = require('./models/log');
 
 mongoose.connect(process.env.MONGODB_URL, {
-  useNewUrlParser: true,
   poolSize: process.env.DB_POOL_SIZE,
+  authSource: process.env.DB_AUTHSOURCE,
+  user: process.env.DB_USER,
+  pass: process.env.DB_PWD,
+  useCreateIndex: true,
+  useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
@@ -68,7 +72,7 @@ cron.schedule(process.env.CRON_SYNTAX, async () => {
     const log = new Log(logTmp);
     const savedLog = await log.save();
 
-    console.log(`saved log in db:\n ${savedLog}`);
+    console.log(`\n saved logs in db:\n ${savedLog}`);
   });
 });
 
