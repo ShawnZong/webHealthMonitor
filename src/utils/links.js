@@ -11,6 +11,13 @@ exports.links = [
     url: 'https://www.f-secure.com',
     path: '/fi',
   },
+  {
+    op: 'checkEle',
+    method: 'GET',
+    url: 'https://www.f-secure.com/en',
+    selector: '.cmp-navigation__item-link',
+    innerHTML: 'For home',
+  },
 ];
 
 // exports.links = [

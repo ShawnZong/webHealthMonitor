@@ -2,6 +2,11 @@
 const axios = require('axios');
 const url = require('url');
 
+// string2DOM
+const jsdom = require('jsdom');
+
+const { JSDOM } = jsdom;
+
 const { performance } = require('perf_hooks');
 
 // timing request
@@ -74,6 +79,7 @@ const CheckStatusCode = async (link) => {
       op: link.op,
       date: new Date().toUTCString(),
       method: link.method,
+      expectedStatusCode: link.statusCode,
       reqUrl: link.url,
       // log: `${new Date().toUTCString()}, fail ${link.method} ${link.url}`,
     };
@@ -88,7 +94,8 @@ const CheckStatusCode = async (link) => {
             method: link.method,
             reqUrl: link.url,
             resUrl: result.request.res.responseUrl,
-            statusCode: result.status,
+            expectedStatusCode: link.statusCode,
+            resStatusCode: result.status,
             responseTime: result.duration.toFixed(2),
             // log: `${new Date().toUTCString()}, ${link.method} ${
             //   link.url
@@ -103,7 +110,8 @@ const CheckStatusCode = async (link) => {
             method: link.method,
             reqUrl: link.url,
             resUrl: result.request.res.responseUrl,
-            statusCode: result.status,
+            expectedStatusCode: link.statusCode,
+            resStatusCode: result.status,
             // log: `${new Date().toUTCString()}, ${link.method} ${
             //   link.url
             // }, statusCode: ${result.status}`,
@@ -142,6 +150,25 @@ const CheckResBody = async (link) => {
   return { log, result };
 };
 
+const CheckEle = async (link) => {
+  // eslint-disable-next-line prefer-const
+  let { log, result } = await CheckStatusCode({ ...link, statusCode: 200 });
+
+  log.op = link.op;
+  log.expectedInnerHTML = link.innerHTML;
+  if (log.success) {
+    const dom = new JSDOM(result.data);
+    const doc = dom.window.document;
+    const ele = doc.querySelector(link.selector).innerHTML;
+    log.resInnerHTML = ele;
+    if (link.innerHTML !== ele) {
+      log.success = false;
+    }
+  }
+  return { log, result };
+};
+
 module.exports.CheckStatusCode = CheckStatusCode;
 module.exports.CheckPath = CheckPath;
 module.exports.CheckResBody = CheckResBody;
+module.exports.CheckEle = CheckEle;

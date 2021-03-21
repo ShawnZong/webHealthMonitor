@@ -10,7 +10,12 @@ const jsdom = require('jsdom');
 // import links
 const { links } = require('./utils/links');
 
-const { CheckStatusCode, CheckPath } = require('./utils/operations');
+const {
+  CheckStatusCode,
+  CheckPath,
+  CheckResBody,
+  CheckEle,
+} = require('./utils/operations');
 
 // eslint-disable-next-line func-names
 (async function () {
@@ -23,6 +28,14 @@ const { CheckStatusCode, CheckPath } = require('./utils/operations');
         break;
       case 'checkPath':
         response = await CheckPath(link);
+        console.log(response.log);
+        break;
+      case 'checkResBody':
+        response = await CheckResBody(link);
+        console.log(response.log);
+        break;
+      case 'checkEle':
+        response = await CheckEle(link);
         console.log(response.log);
         break;
       default:
