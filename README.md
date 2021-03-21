@@ -2,14 +2,11 @@
 
 ## Overview
 
-----
 A tool for monitoring website health. 
 
 Users can specify a list of URLs and test rules in /src/utils/links.js. The tool will automatically execute monitor tasks, generate logs and store in MongoDB.
 
 ## Solution
-
-----
 
 I chose **JavaScript** to develop this tool. Because JavaScript is easy to use for software related to web. For example, I can select the DOM element conveniently when testing whether webpate has a text or not. Also **npm** is convenient for package management. Moreover, the JS community has many useful libraries, including **Axios**, a promise based HTTP client.
 
@@ -22,8 +19,6 @@ For security concerns, I moved all sensive information to external configuration
 I used MongoDB for storing logs.  enabled connection pool, because the tool frequently writes to db, connection pool can reuse database connections.
 
 ## Technologies
-
-----
 
 * JavaScript + Node.js + Axios + Npm
 * MongoDB
@@ -39,8 +34,6 @@ I used MongoDB for storing logs.  enabled connection pool, because the tool freq
 * Eslint to ensure coding style
 
 ## Usage
-
-----
 
 1. The logs are stored in MongoDB. If users have cloud db service, just specify the URI in database.env, otherwise follow the instructions below to create local MongoDB.
 
