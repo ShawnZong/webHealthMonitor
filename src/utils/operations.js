@@ -9,7 +9,7 @@ const { JSDOM } = jsdom;
 
 const { performance } = require('perf_hooks');
 
-// timing request
+// axios config timing request
 axios.interceptors.request.use(
   (config) => {
     config.metadata = { startTime: performance.now() };
@@ -24,6 +24,12 @@ axios.interceptors.response.use((response) => {
   return response;
 });
 
+/**
+ * check whether the website returns expected status code
+ * @author Junsheng Tan
+ * @param  {Object} link url and requirements that needs to be tested
+ * @return {{Object, Object}} a log object and a result object returned from axios
+ */
 const CheckStatusCode = async (link) => {
   let log;
   let result;
@@ -42,7 +48,11 @@ const CheckStatusCode = async (link) => {
         break;
       case 'PUT':
         try {
-          result = await axios.get(link.url);
+          if (!link.body) {
+            error = true;
+            break;
+          }
+          result = await axios.put(link.url, link.body);
         } catch (e) {
           error = e;
           break;
@@ -50,7 +60,11 @@ const CheckStatusCode = async (link) => {
         break;
       case 'POST':
         try {
-          result = await axios.get(link.url);
+          if (!link.body) {
+            error = true;
+            break;
+          }
+          result = await axios.post(link.url, link.body);
         } catch (e) {
           error = e;
 
@@ -59,7 +73,7 @@ const CheckStatusCode = async (link) => {
         break;
       case 'DELETE':
         try {
-          result = await axios.get(link.url);
+          result = await axios.delete(link.url);
         } catch (e) {
           error = e;
 
@@ -82,9 +96,7 @@ const CheckStatusCode = async (link) => {
       method: link.method,
       expectedStatusCode: link.statusCode,
       reqUrl: link.url,
-      // log: `${new Date().toUTCString()}, fail ${link.method} ${link.url}`,
     };
-    // log = `fail: ${new Date().toUTCString()}, fail ${link.method} ${link.url}`;
   } else {
     log =
       result.status === link.statusCode
@@ -98,11 +110,6 @@ const CheckStatusCode = async (link) => {
             expectedStatusCode: link.statusCode,
             resStatusCode: result.status,
             responseTime: result.duration.toFixed(2),
-            // log: `${new Date().toUTCString()}, ${link.method} ${
-            //   link.url
-            // }, statusCode: ${
-            //   result.status
-            // }, responseTime: ${result.duration.toFixed(2)}ms`,
           }
         : {
             success: false,
@@ -114,15 +121,18 @@ const CheckStatusCode = async (link) => {
             resUrl: result.request.res.responseUrl,
             expectedStatusCode: link.statusCode,
             resStatusCode: result.status,
-            // log: `${new Date().toUTCString()}, ${link.method} ${
-            //   link.url
-            // }, statusCode: ${result.status}`,
           };
   }
 
   return { log, result };
 };
 
+/**
+ * check whether the url of website contains expected path
+ * @author Junsheng Tan
+ * @param  {Object} link url and requirements that needs to be tested
+ * @return {{Object, Object}} a log object and a result object returned from axios
+ */
 const CheckPath = async (link) => {
   // eslint-disable-next-line prefer-const
   let { log, result } = await CheckStatusCode({ ...link, statusCode: 200 });
@@ -139,6 +149,13 @@ const CheckPath = async (link) => {
   }
   return { log, result };
 };
+
+/**
+ * check response body after requesting an url
+ * @author Junsheng Tan
+ * @param  {Object} link url and requirements that needs to be tested
+ * @return {{Object, Object}} a log object and a result object returned from axios
+ */
 const CheckResBody = async (link) => {
   // eslint-disable-next-line prefer-const
   let { log, result } = await CheckStatusCode({ ...link, statusCode: 200 });
@@ -154,6 +171,12 @@ const CheckResBody = async (link) => {
   return { log, result };
 };
 
+/**
+ * check whether current DOM contains specific element
+ * @author Junsheng Tan
+ * @param  {Object} link url and requirements that needs to be tested
+ * @return {{Object, Object}} a log object and a result object returned from axios
+ */
 const CheckEle = async (link) => {
   // eslint-disable-next-line prefer-const
   let { log, result } = await CheckStatusCode({ ...link, statusCode: 200 });

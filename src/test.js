@@ -4,7 +4,7 @@ require('dotenv').config();
 // cronb
 const cron = require('node-cron');
 
-// db
+// db configuration
 const mongoose = require('mongoose');
 const Log = require('./models/log');
 
@@ -26,20 +26,23 @@ const {
   CheckEle,
 } = require('./utils/operations');
 
-// import links
+// urls and requirements
 const { links } = require('./utils/links');
 
 // global variables
 let response;
 let resLog;
 
+/**
+ * create a cron schedule
+ * @author Junsheng Tan
+ */
 cron.schedule(process.env.CRON_SYNTAX, async () => {
   links.map(async (link) => {
     switch (link.op) {
       case 'checkStatusCode':
         response = await CheckStatusCode(link);
         resLog = response.log;
-        // console.log(resLog);
         break;
       case 'checkPath':
         response = await CheckPath(link);
@@ -57,7 +60,8 @@ cron.schedule(process.env.CRON_SYNTAX, async () => {
         // console.log(resLog);
         break;
       default:
-        console.log('invalid op');
+        response = await CheckStatusCode(link);
+        resLog = response.log;
     }
 
     const logTmp = {
@@ -68,37 +72,10 @@ cron.schedule(process.env.CRON_SYNTAX, async () => {
       log: JSON.stringify(resLog),
       error: resLog.error ? resLog.error : null,
     };
-    // console.log(blogTmp);
+
     const log = new Log(logTmp);
     const savedLog = await log.save();
 
     console.log(`\n saved logs in db:\n ${savedLog}`);
   });
 });
-
-// eslint-disable-next-line func-names
-// (async function () {
-//   let response;
-//   links.map(async (link) => {
-//     switch (link.op) {
-//       case 'checkStatusCode':
-//         response = await CheckStatusCode(link);
-//         console.log(response.log);
-//         break;
-//       case 'checkPath':
-//         response = await CheckPath(link);
-//         console.log(response.log);
-//         break;
-//       case 'checkResBody':
-//         response = await CheckResBody(link);
-//         console.log(response.log);
-//         break;
-//       case 'checkEle':
-//         response = await CheckEle(link);
-//         console.log(response.log);
-//         break;
-//       default:
-//         console.log('invalid op');
-//     }
-//   });
-// })();
