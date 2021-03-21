@@ -3,7 +3,13 @@ exports.links = [
     op: 'checkStatusCode',
     method: 'GET',
     url: 'https://www.f-secasdasure.com',
-    statusCode: 200,
+    statusCode: 20,
+  },
+  {
+    op: 'checkPath',
+    method: 'GET',
+    url: 'https://www.f-secure.com',
+    path: '/errorpage',
   },
   {
     op: 'checkPath',
@@ -17,6 +23,13 @@ exports.links = [
     url: 'https://www.f-secure.com/en',
     selector: '.cmp-navigation__item-link',
     innerHTML: 'For home',
+  },
+  {
+    op: 'checkEle',
+    method: 'GET',
+    url: 'https://www.f-secure.com/en',
+    selector: '.cmp-navigation__item-link',
+    innerHTML: 'error Text',
   },
 ];
 
