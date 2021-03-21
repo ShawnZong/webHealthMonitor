@@ -4,7 +4,7 @@
 
 A tool for monitoring website health. 
 
-Users can specify a list of URLs and test rules in /src/utils/links.js. The tool will automatically execute monitor tasks, generate logs and store in MongoDB.
+Users can specify a list of URLs and test rules in /src/utils/links.js. The tool will automatically execute monitor tasks, generate logs and store in MongoDB. The logs contain task overview, checked URLs, their status, response time, error message (if exists).
 
 ## Solution
 
@@ -29,7 +29,7 @@ I used MongoDB for storing logs.  enabled connection pool, because the tool freq
 
 * User can specify a list of URLs and test rules.
 * User can configure custom interval for periodically executing tasks.
-* A Log contains request info, webite availability and whether it fullfills the rules.
+* A Log contains request info, webite availability and whether it fullfills the rules. The log time is UTC time, so no need to worry about timezones. Response time is calculated by **performance.now()** which provied millisecond precision.
 * Logs are stored in MongoDB. User can either use the local docker-compose.yml to create local MongoDB, or specify the URI of Atlas MongoDB in configuration file.
 * Eslint to ensure coding style
 
@@ -146,3 +146,18 @@ cd ./src && node test.js
 ```
 
 5. Users can see logs output in console as well as in database.
+
+## Design question
+
+Assuming we wanted to simultaneously monitor the connectivity (and latencies) from multiple geographically distributed locations and collect all the data to a single report that always reflects the current status across all locations. Describe how the design would be different. How would you transfer the data? Security considerations?
+
+We can use proxy to simulate requests from different locations. Because I used database to store logs. One central databse might not be sufficient and safe. A distributed database like TiKV can be considered. Also, cloud service like AWS, GCP, Azure are good, because they manage the data for you and can easily be scaled. 
+
+Regarding security concerns in data transfer. We can establish IPsec tunnels by StrongSwan, so that the communicated are encrypted.
+
+## Future work
+
+* Upload Docker image.
+* Patterns to check header parameters.
+* Some websites require login, which needs user cookie. Provide authentication patterns which login first and then attach cookie each time sending a request.
+* Patterns to download files from websites.
