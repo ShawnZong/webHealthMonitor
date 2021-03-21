@@ -115,14 +115,14 @@ const CheckStatusCode = async (link) => {
 
 const CheckPath = async (link) => {
   // eslint-disable-next-line prefer-const
-  let { log, result } = await CheckStatusCode(link);
+  let { log, result } = await CheckStatusCode({ ...link, statusCode: 200 });
   const resUrl = url.parse(result.request.res.responseUrl);
 
   log.op = link.op;
   log.expectedPath = link.path;
 
   if (log.success) {
-    if (link.path !== resUrl) {
+    if (link.path !== resUrl.path) {
       log.success = false;
     }
   }
