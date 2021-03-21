@@ -128,6 +128,20 @@ const CheckPath = async (link) => {
   }
   return { log, result };
 };
+const CheckResBody = async (link) => {
+  // eslint-disable-next-line prefer-const
+  let { log, result } = await CheckStatusCode({ ...link, statusCode: 200 });
+
+  log.op = link.op;
+
+  if (log.success) {
+    if (link.body !== result.data) {
+      log.success = false;
+    }
+  }
+  return { log, result };
+};
 
 module.exports.CheckStatusCode = CheckStatusCode;
 module.exports.CheckPath = CheckPath;
+module.exports.CheckResBody = CheckResBody;

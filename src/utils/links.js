@@ -33,10 +33,11 @@ exports.links = [
 //     url: 'https://www.f-secure.com',
 //     path: '/fi',
 //   },
-//   {
-//     op: 'checkResBody',
-//     method: 'GET',
-//     url: 'https://www.f-secure.com',
-//     path: '/fi',
-//   },
+// {
+//   op: 'checkResBody',
+//   method: 'GET',
+//   url: 'https://www.f-secure.com',
+//   path: '/fi',
+//   body:"<h>test</h>"
+// },
 // ];
