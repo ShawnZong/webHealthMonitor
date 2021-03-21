@@ -38,6 +38,7 @@ let resLog;
  * @author Junsheng Tan
  */
 cron.schedule(process.env.CRON_SYNTAX, async () => {
+  //  execute each task
   links.map(async (link) => {
     switch (link.op) {
       case 'checkStatusCode':
@@ -47,23 +48,21 @@ cron.schedule(process.env.CRON_SYNTAX, async () => {
       case 'checkPath':
         response = await CheckPath(link);
         resLog = response.log;
-        // console.log(resLog);
         break;
       case 'checkResBody':
         response = await CheckResBody(link);
         resLog = response.log;
-        // console.log(resLog);
         break;
       case 'checkEle':
         response = await CheckEle(link);
         resLog = response.log;
-        // console.log(resLog);
         break;
       default:
         response = await CheckStatusCode(link);
         resLog = response.log;
     }
 
+    // save log to mongodb
     const logTmp = {
       success: resLog.success,
       op: resLog.op,
@@ -72,7 +71,6 @@ cron.schedule(process.env.CRON_SYNTAX, async () => {
       log: JSON.stringify(resLog),
       error: resLog.error ? resLog.error : null,
     };
-
     const log = new Log(logTmp);
     const savedLog = await log.save();
 

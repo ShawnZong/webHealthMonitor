@@ -87,6 +87,7 @@ const CheckStatusCode = async (link) => {
     error = true;
   }
 
+  // connection level problems
   if (error) {
     log = {
       success: false,
@@ -112,6 +113,7 @@ const CheckStatusCode = async (link) => {
             responseTime: result.duration.toFixed(2),
           }
         : {
+            // content problems
             success: false,
             op: link.op,
             error: 'requirement unfulfilled',
@@ -184,6 +186,7 @@ const CheckEle = async (link) => {
   log.op = link.op;
   log.expectedInnerHTML = link.innerHTML;
   if (log.success) {
+    // convert String to DOM
     const dom = new JSDOM(result.data);
     const doc = dom.window.document;
     const ele = doc.querySelector(link.selector).innerHTML;
