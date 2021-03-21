@@ -76,6 +76,7 @@ const CheckStatusCode = async (link) => {
   if (error) {
     log = {
       success: false,
+      error: 'Unable to access the website',
       op: link.op,
       date: new Date().toUTCString(),
       method: link.method,
@@ -106,6 +107,7 @@ const CheckStatusCode = async (link) => {
         : {
             success: false,
             op: link.op,
+            error: 'requirement unfulfilled',
             date: new Date().toUTCString(),
             method: link.method,
             reqUrl: link.url,
@@ -132,6 +134,7 @@ const CheckPath = async (link) => {
   if (log.success) {
     if (link.path !== resUrl.path) {
       log.success = false;
+      log.error = 'requirement unfulfilled';
     }
   }
   return { log, result };
@@ -145,6 +148,7 @@ const CheckResBody = async (link) => {
   if (log.success) {
     if (link.body !== result.data) {
       log.success = false;
+      log.error = 'requirement unfulfilled';
     }
   }
   return { log, result };
@@ -163,6 +167,7 @@ const CheckEle = async (link) => {
     log.resInnerHTML = ele;
     if (link.innerHTML !== ele) {
       log.success = false;
+      log.error = 'requirement unfulfilled';
     }
   }
   return { log, result };
