@@ -3,7 +3,7 @@ exports.links = [
     op: 'checkStatusCode',
     method: 'GET',
     url: 'https://www.f-secasdasure.com',
-    statusCode: 20,
+    statusCode: 200,
   },
   {
     op: 'checkPath',

@@ -62,6 +62,10 @@ cron.schedule(process.env.CRON_SYNTAX, async () => {
         resLog = response.log;
     }
 
+    // uncomment below to output log to console
+    // console.log(resLog)
+
+    // comment out below codes if you don't want to store the logs to database
     // save log to mongodb
     const logTmp = {
       success: resLog.success,
