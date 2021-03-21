@@ -5,7 +5,7 @@ const axios = require('axios');
 const api = supertest('https://google.com/');
 
 test('notes are returned as json', async () => {
-  axios.get('https://google.com/').then(function (response) {
+  axios.get('https://googldfsdfe.com/').then(function (response) {
     // handle success
     console.log(response);
   });
