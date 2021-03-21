@@ -42,17 +42,6 @@ I used MongoDB for storing logs. enabled connection pool, because the tool frequ
 npm install
 ```
 
-2. The logs are stored in MongoDB. If users have cloud DB service, just specify the URI in database.env, otherwise, follow the instructions below to create local MongoDB.
-
-``` bash
-# enter project root directory
-# create MongoDB container. A volume is used for persistent storage
-docker-compose up -d
-
-# check container status
-docker ps
-```
-
 2. For security concerns, users need to specify the configuration in external files. Two configuration files need to be created first.
 
 The configuration will be read in by **dotenv** and **docker-compose.yml**.
@@ -94,7 +83,20 @@ MONGO_INITDB_ROOT_USERNAME = user
 MONGO_INITDB_ROOT_PASSWORD = password
 ```
 
-3. Specify URLs and checking rules in **./src/utils/links.js**. Four patterns are supported.
+   
+
+3. The logs are stored in MongoDB. If users have cloud DB service, just specify the URI in database.env, otherwise, follow the instructions below to create local MongoDB.
+
+``` bash
+# enter project root directory
+# create MongoDB container. A volume is used for persistent storage
+docker-compose up -d
+
+# check container status
+docker ps
+```
+
+4. Specify URLs and checking rules in **./src/utils/links.js**. Four patterns are supported.
 
 * **checkStatusCode**: user can access an URL and check whether the status code is expected.
 
